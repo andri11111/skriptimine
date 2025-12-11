@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo -n "Sisesta oma vanus: "
+read vanus
+
+#loeb silent ja prindib sama line vanuse
+#read -s -p "Siesta oma vanus: " vanus
+
+#vanus 0-11 vahes vastab sa oled laps
+if [ $vanus -gt 0 ] && [ $vanus -lt 11 ];then
+	echo  "sa oled laps"
+#vanus 11 ja 17 vahes vastab sa oled nooruk
+else
+	if [ $vanus -ge 11 ] && [ $vanus -lt 18 ];then
+		echo "Sa oled nooruk"
+	else
+		if [ $vanus -ge 18 ] && [ $vanus -lt 63 ];then
+			echo "sa oled täiskasvanu"
+		else
+			if [ $vanus -ge 63 ];then
+				echo "Sa oled seenior"
+			else 
+				echo "Vigane sisend"
+			fi
+		fi
+	fi
+fi
