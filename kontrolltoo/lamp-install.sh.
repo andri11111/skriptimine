@@ -1,0 +1,99 @@
+#!/bin/bash
+set -e 
+export DEBIAN_FRONTEND=noninteractive
+
+#1) Baaspakettide paigaldus ja värskendus
+apt-get update -y
+apt-get install -y curl ca-certificates lsb-release gnupg debconf-utils wget
+
+# 2) MySQL 8.0 (Oracle APT + preseed)
+# Kui MySQL puudub v versioon pole 8.0 siis paigaldame
+if ! command -v mysql &> /dev/null || ! mysql --version | grep -q "8.0"; then
+	echo "Installing MySQL 8.0..."
+	echo "mysql-apt-config mysql-apt-config/select-server select mysql-8.0" | debconf-set-selections
+	echo "mysql-apt-config mysql-apt-config/select-tools select Disabled" | debconf-set-selections
+	echo "mysql-community-server mysql-community-server/root-pass password" | debconf-set-selections
+	echo "mysql-community-server mysql-community-server/re-root-pass password" | debconf-set-selections
+# MySQL konfiguratsiooni fail
+	wget -q -O /tmp/mysql-apt-config_0.8.36-1_all.deb https://dev.mysql.com/get/mysql-apt-config_0.8.36-1_all.deb
+	dpkg -i /tmp/mysql-apt-config_0.8.36-1_all.deb 2>/dev/null || true
+	apt-get update -y
+# MySQL paigaldus
+	apt-get install -y mysql-server
+	systemctl enable --now mysql
+else
+	echo "MySQL 8.0 on juba installitud, skippime..."
+fi
+
+# MySQL root parool ja .my.cnf
+if [ ! -f /root/.my.cnf ]; then
+    echo "Loome .my.cnf faili..."
+    MYSQL_ROOT_PASS=$(openssl rand -base64 12)
+    
+    # Proovi esmalt ilma paroolita (värske paigaldus)
+    if mysql -e "SELECT 1;" &>/dev/null; then
+      mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASS';"
+    else
+      # Kui on juba parool, kasuta sudo mysql
+      sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASS';"
+    fi
+    
+    cat > /root/.my.cnf <<EOF
+[client]
+user=root
+password=$MYSQL_ROOT_PASS
+EOF
+    chmod 600 /root/.my.cnf
+    echo "MySQL parool seatud ja salvestatud /root/.my.cnf"
+  else
+    echo ".my.cnf juba olemas"
+  fi
+# 3)
+if ! command -v apache2 &> /dev/null; then
+	echo "Installime Apache2..."
+	apt-get install -y apache2
+	systemctl enable --now apache2
+else
+	echo "Apache 2 on juba installitud"
+fi
+
+# Index.htlm ja info.php ümberkirjutus
+cat >/var/www/html/index.html <<'HTML'
+<!doctype html>
+<html><head><meta charset="utf-8"><title>It works!</title></head>
+<body style="font-family: sans-serif">
+  <h1>It works — Õpilane: Andri</h1>
+  <p>Installed at: DATE_PLACEHOLDER</p>
+</body></html>
+HTML
+
+sed -i "s/DATE_PLACEHOLDER/$(date '+%F %T')/" /var/www/html/index.html
+
+echo "<?php phpinfo(); ?>" >/var/www/html/info.php
+
+# 4) PHP
+if ! command -v php &> /dev/null; then
+	echo "Installime PHP 8.2..."
+	apt-get install -y php php-cli php-common php-mysql libapache2-mod-php
+	systemctl restart apache2
+else
+	echo "PHP on juba installitud, skipime"
+	systemctl restart apache2
+fi
+
+# 5) Raport
+
+echo ""
+echo "=== REPORT ==="
+apache2 -v | head -n1
+php -v | head -n1
+mysql --version
+echo "apache active: $(systemctl is-active apache2), enabled: $(systemctl is-enabled apache2)"
+echo "mysql  active: $(systemctl is-active mysql),   enabled: $(systemctl is-enabled mysql)"
+echo "Files: /var/www/html/index.html , /var/www/html/info.php"
+if [ -f /root/.my.cnf ]; then
+    echo ".my.cnf: olemas (/root/.my.cnf)"
+  else
+    echo ".my.cnf: puudub!"
+  fi
+echo "==============="
