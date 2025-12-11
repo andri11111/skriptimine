@@ -1,0 +1,19 @@
+#!/bin/bash
+# Skript, mis väljastab kolmnurga, kus ringid muutuvad tärnideks vasakult paremale
+
+echo -n "Sisesta ridade arv: "
+read rows
+
+echo
+
+for ((i=1; i<=rows; i++)); do
+    echo -n "$i. "
+    for ((j=1; j<=rows; j++)); do
+        if [ $j -gt $((rows - i)) ]; then
+            echo -n "* "
+        else
+            echo -n "o "
+        fi
+    done
+    echo
+done

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Skript, mis väljastab tärnidest ristküliku, kus esimene ja viimane rida on täidetud ning sisemised read on tühjad keskelt
+
+echo -n "Sisesta ridade arv: "
+read rows
+echo -n "Sisesta tärnide arv reas: "
+read cols
+
+echo
+
+for ((i=1; i<=rows; i++)); do
+    echo -n "$i. "
+    for ((j=1; j<=cols; j++)); do
+        if [ $i -eq 1 ] || [ $i -eq $rows ] || [ $j -eq 1 ] || [ $j -eq $cols ]; then
+            echo -n "* "
+        else
+            echo -n "  "
+        fi
+    done
+    echo
+done

@@ -1,0 +1,18 @@
+#!/bin/bash
+# Skript väljastab kasutaja poolt määratud ridade ja tärnide arvuga kujundi
+
+echo -n "Sisesta ridade arv: " 
+read ridu
+echo -n "Sisesta tärnide arv reas: "
+read tarnid
+
+for i in $(seq 1 $ridu)
+do
+    echo -n "$i.  "
+    for j in $(seq 1 $tarnid)
+    do
+        echo -n "* "
+    done
+    echo
+done
+

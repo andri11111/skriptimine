@@ -1,0 +1,15 @@
+#!/bin/bash
+# Skript, mis väljastab kolmnurga tärnidest, kus iga real on tärnide arv võrdne rea numbriga
+
+echo -n "Sisesta ridade arv: "
+read rows
+
+echo
+
+for ((i=1; i<=rows; i++)); do
+    echo -n "$i. "
+    for ((j=1; j<=i; j++)); do
+        echo -n "* "
+    done
+    echo
+done
