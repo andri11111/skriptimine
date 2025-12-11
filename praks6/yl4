@@ -1,0 +1,30 @@
+#!/bin/bash
+# Skript kontrollib, kas sisestatud arv või arvud on algarvud
+
+# Funktsioon ühe arvu kontrolliks
+function kontrolli_algarv() {
+    arv=$1
+    if [[ $arv -le 1 ]]; then
+        echo "$arv - ei ole algarv"
+        return
+    fi
+    jagaja=2
+    while [[ $((arv % jagaja)) -ne 0 && $((jagaja * jagaja)) -le $arv ]]; do
+        ((jagaja++))
+    done
+    if [[ $((arv % jagaja)) -eq 0 && $arv -ne $jagaja ]]; then
+        echo "$arv - ei ole algarv"
+    else
+        echo "$arv - on algarv"
+    fi
+}
+
+# Üksik arv kasutajalt
+read -p "Sisesta suvaline arv: " sisestus
+kontrolli_algarv $sisestus
+
+# Täienduseks: 20 esimese täisarvu kontroll
+echo "20 esimese täisarvu algarvude kontroll:"
+for i in {1..20}; do
+    kontrolli_algarv $i
+done

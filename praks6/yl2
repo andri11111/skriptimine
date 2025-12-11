@@ -1,0 +1,26 @@
+#!/bin/bash
+# Skript arvutab sisestatud täisarvu numbrite summa
+
+echo -n "Sisesta suvaline täisarv: "
+read orig
+
+arv=$orig
+summa=0
+mark=1
+
+# kui arv on negatiivne, muuda see positiivseks, märk jääb meelde
+if [[ $arv -lt 0 ]]; then
+    mark=-1
+    arv=$(( -1 * arv ))
+fi
+
+while [[ $arv -ne 0 ]]
+do
+    jaak=$(( arv % 10 ))     # võta viimane number
+    summa=$(( summa + jaak ))  # liida summale
+    arv=$(( arv / 10 ))        # eemalda viimane number
+done
+
+summa=$(( summa * mark ))      # pane negatiivne märk tagasi kui vaja
+
+echo "Arvu $orig numbrite summa on $summa"

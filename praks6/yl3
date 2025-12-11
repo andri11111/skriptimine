@@ -1,0 +1,16 @@
+#!/bin/bash
+# Skript küsib kasutajalt kuu numbri ja väljastab kuu nime
+
+read -p "Sisesta kuu number (1-12): " kuu
+
+# Kuu nimede massiiv
+kuud=("jaanuar" "veebruar" "märts" "aprill" "mai" "juuni" "juuli" "august" "september" "oktoober" "november" "detsember")
+
+# Kontrollime, kas number on vahemikus 1-12
+if [[ $kuu -ge 1 && $kuu -le 12 ]]; then
+    # Massiivi indeks algab 0-st, seega lahutame 1
+    echo "See on ${kuud[$((kuu-1))]}"
+else
+    echo "Viga: sisestatud number ei ole vahemikus 1-12"
+fi
+

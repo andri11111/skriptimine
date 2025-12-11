@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# 10 esimese arvu summa - liida ainult paaris arvud
+#
+summa=0 # Muutuja, kuhu salvestame paarisarvude summa
+#Tsükkel arvudest 1 - 10
+for (( arv=1; arv<11; arv++ ))
+do
+	jaak=$(($arv % 2)) # arvutame jäägi jagamisel 2ga
+	if [ $jaak -eq 0 ]; then #kui jääk 0 siis paaris
+		summa=$(($summa + $arv)) # lisame paarisarvu summale
+		echo $summa # kuvame jooksva summa iga paarisarvu lisamisel
+	fi
+done
+#kuvame lõpliku summa
+echo "Arvude vahemikus 1 kuni 10 (kaasaarvatud) paarisarvude summa on $summa"
+
