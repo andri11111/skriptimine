@@ -1,0 +1,25 @@
+#!/bin/bash
+if [ $# -ne 2 ]; then
+        echo "Kasutusjuhen: $0 kasutajate failinimi paroolide failinimi"
+	exit 1
+else
+
+	kasutajafail=$1
+	paroolifail=$2
+
+	if [ -f $kasutajafail -a -r $kasutajafail ] && [ -f $paroolifail -a -r $paroolifail ]; then
+		echo "failid on korras"
+
+		paste $kasutajafail $paroolifail | while read -r kasutaja parool
+		do
+			echo "loon kasutaja: $kasutaja"
+			useradd -m -s /bin/bash $kasutaja
+			echo "$kasutaja:$parool" | chpasswd
+		done
+	else
+		echo "probleem"
+	fi
+fi
+
+
+

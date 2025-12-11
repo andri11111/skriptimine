@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ $# -ne 1 ]; then
+	echo "Kasutusjuhen: $0 failinimi"
+else
+	failinimi=$1
+	if [ -f $failinimi -a -r $failinimi ]; then
+		echo "fail on korras"
+		for nimi in $(cat $failinimi)
+		do
+			echo $nimi
+			sh lisa_kasutaja $nimi
+		done
+	else
+		echo "Probleem failiga $failinimi"
+	fi
+fi

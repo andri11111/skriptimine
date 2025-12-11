@@ -1,0 +1,23 @@
+#!/bin/bash
+# kasutaja lisamise skript
+#
+#kontrollib kas sisestati ainult 1 asi, kui mitte siis antakse kasutajajuhend
+if [ $# -ne 1 ]; then
+	echo "Kasutusjuhend: $0 kasutajanimi"
+else
+# $1 skripti esimene argument paneb, et kasutajanimi oleks too
+	kasutajanimi="$1"
+# -m loob kodukataloogi  -s shell
+	/usr/sbin/useradd $kasutajanimi -m -s /bin/bash
+	kasu_tulemus=$?
+# kui kasutaja lisatud süsteemi $? on 0 ja siis echotakse, et kasutaja on lisatud ja näitatakse /etc/passwd faili ja otsitakse kasutajanimi, näidatakse ka home kataloogi
+	if [ $kasu_tulemus -eq 0 ]; then
+		echo "kasutaja nimega $kasutajanimi on lisatud süsteemi"
+		cat /etc/passwd | grep $kasutajanimi
+		ls -la /home/$kasutajanimi
+#kui $? ei ole 0 siis echotakse probleem
+	else
+		echo "probleem kasutaja $kasutajanimi lisamisega"
+		echo "probleemi kood on $kasu_tulemus"
+	fi
+fi
