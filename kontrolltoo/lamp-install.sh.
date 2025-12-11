@@ -62,8 +62,8 @@ cat >/var/www/html/index.html <<'HTML'
 <!doctype html>
 <html><head><meta charset="utf-8"><title>It works!</title></head>
 <body style="font-family: sans-serif">
-  <h1>It works — Õpilane: Andri</h1>
-  <p>Installed at: DATE_PLACEHOLDER</p>
+  <h1>Töötab — Õpilane: Andri Tilsen</h1>
+  <p>Installitud kuupäeval: DATE_PLACEHOLDER</p>
 </body></html>
 HTML
 
