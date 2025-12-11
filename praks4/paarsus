@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#kontrollib, kas number on sisestatud, ja kas neid on täpselt 1
+if [ $# -ne 1 ]; then
+    echo "Käivita see skript koos arvuga, mille paarisust soovid kontrollida, näiteks: ./paarsus 3"
+#lõpetab skripti veakoodiga 1
+    exit 1
+fi
+
+#loeb käsurealt arvu
+arv=$1
+
+#kui jääk on 0 siis on tegemist paarisarvuga ja kui ei ole paarituga
+if [ $(($arv % 2)) -eq 0 ]; then
+    echo "Antud arv on paarisarv"
+else
+    echo "Antud arv on paaritu"
+fi
