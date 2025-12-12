@@ -2,14 +2,14 @@
 # Skript, mis väljastab kolmnurga, kus ringid muutuvad tärnideks vasakult paremale
 
 echo -n "Sisesta ridade arv: "
-read rows
+read rida
 
 echo
 
-for ((i=1; i<=rows; i++)); do
+for ((i=1; i<=rida; i++)); do
     echo -n "$i. "
-    for ((j=1; j<=rows; j++)); do
-        if [ $j -gt $((rows - i)) ]; then
+    for ((j=1; j<=rida; j++)); do
+        if [ $j -gt $((rida - i)) ]; then
             echo -n "* "
         else
             echo -n "o "

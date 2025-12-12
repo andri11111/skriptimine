@@ -2,16 +2,16 @@
 # Skript, mis väljastab tärnidest ristküliku, kus esimene ja viimane rida on täidetud ning sisemised read on tühjad keskelt
 
 echo -n "Sisesta ridade arv: "
-read rows
+read rida
 echo -n "Sisesta tärnide arv reas: "
-read cols
+read tarnid
 
 echo
 
-for ((i=1; i<=rows; i++)); do
+for ((i=1; i<=rida; i++)); do
     echo -n "$i. "
-    for ((j=1; j<=cols; j++)); do
-        if [ $i -eq 1 ] || [ $i -eq $rows ] || [ $j -eq 1 ] || [ $j -eq $cols ]; then
+    for ((j=1; j<=tarnid; j++)); do
+        if [ $i -eq 1 ] || [ $i -eq $rida ] || [ $j -eq 1 ] || [ $j -eq $tarnid ]; then
             echo -n "* "
         else
             echo -n "  "
