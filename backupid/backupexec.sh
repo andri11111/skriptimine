@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Lihtne kasutajate varukoopia skript
+# kasutajate varukoopia skript
 
 KODUKATALOOG="/home"
 VARU_KATALOOG="/home_bcp"
